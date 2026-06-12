@@ -1,0 +1,2564 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jornada: 99KG Quest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #080812;
+        --surface: #10101e;
+        --card: #16162a;
+        --border: #2a2a45;
+        --violet: #7c3aed;
+        --violet-dim: #3b1d7a;
+        --gold: #f59e0b;
+        --gold-dim: #78490a;
+        --green: #10b981;
+        --green-dim: #064e37;
+        --red: #ef4444;
+        --text: #e2e8f0;
+        --muted: #64748b;
+        --sub: #94a3b8;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Inter", sans-serif;
+        min-height: 100vh;
+        padding: 0 0 80px;
+        background-image:
+          radial-gradient(
+            ellipse 80% 40% at 50% -10%,
+            rgba(124, 58, 237, 0.18) 0%,
+            transparent 70%
+          ),
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 39px,
+            rgba(255, 255, 255, 0.02) 40px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 39px,
+            rgba(255, 255, 255, 0.02) 40px
+          );
+      }
+
+      /* ─── HEADER ─── */
+      header {
+        text-align: center;
+        padding: 48px 24px 32px;
+        position: relative;
+      }
+      .eyebrow {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 11px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--violet);
+        margin-bottom: 10px;
+      }
+      h1 {
+        font-family: "Rajdhani", sans-serif;
+        font-size: clamp(36px, 8vw, 64px);
+        font-weight: 700;
+        letter-spacing: -1px;
+        line-height: 1;
+        color: var(--text);
+      }
+      h1 span {
+        color: var(--gold);
+      }
+      .subtitle {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 400;
+      }
+
+      /* ─── WEIGHT INPUT ─── */
+      .weight-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin: 32px auto 0;
+        max-width: 300px;
+      }
+      .weight-label {
+        font-size: 11px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .weight-input-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px 16px;
+        width: 100%;
+      }
+      .weight-input-row input {
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--text);
+        font-family: "Rajdhani", sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        width: 100%;
+        text-align: center;
+      }
+      .weight-input-row span {
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 500;
+        flex-shrink: 0;
+      }
+      .weight-save-btn {
+        background: var(--violet);
+        border: none;
+        color: white;
+        font-family: "Rajdhani", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        padding: 8px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.1s;
+      }
+      .weight-save-btn:hover {
+        background: #6d28d9;
+        transform: translateY(-1px);
+      }
+
+      /* ─── GLOBAL PROGRESS ─── */
+      .global-progress {
+        max-width: 640px;
+        margin: 36px auto 0;
+        padding: 0 24px;
+      }
+      .gp-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 8px;
+      }
+      .gp-title {
+        font-size: 11px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .gp-pct {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--gold);
+      }
+      .gp-bar-bg {
+        height: 8px;
+        background: var(--card);
+        border-radius: 99px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+      }
+      .gp-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--violet), var(--gold));
+        border-radius: 99px;
+        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+      }
+      .gp-endpoints {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 6px;
+        font-size: 12px;
+        color: var(--muted);
+        font-family: "Rajdhani", sans-serif;
+      }
+      .gp-endpoints .start {
+        color: var(--sub);
+      }
+      .gp-endpoints .end {
+        color: var(--gold);
+        font-weight: 700;
+      }
+
+      /* ─── MAP ─── */
+      .map-section {
+        max-width: 640px;
+        margin: 56px auto 0;
+        padding: 0 24px;
+        position: relative;
+      }
+      .map-title {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 11px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 32px;
+        text-align: center;
+      }
+      .checkpoints-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        position: relative;
+      }
+
+      /* vertical connector line */
+      .checkpoints-list::before {
+        content: "";
+        position: absolute;
+        left: 28px;
+        top: 28px;
+        bottom: 28px;
+        width: 2px;
+        background: linear-gradient(180deg, var(--violet-dim), var(--gold-dim));
+        z-index: 0;
+      }
+
+      /* ─── CHECKPOINT CARD ─── */
+      .cp-card {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 12px;
+      }
+      .cp-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 18px 20px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+        user-select: none;
+      }
+      .cp-header:hover {
+        border-color: var(--violet);
+      }
+      .cp-card.active .cp-header {
+        border-color: var(--violet);
+        background: rgba(124, 58, 237, 0.08);
+      }
+      .cp-card.completed .cp-header {
+        border-color: var(--green);
+        background: rgba(16, 185, 129, 0.06);
+      }
+      .cp-card.locked .cp-header {
+        opacity: 0.45;
+        cursor: default;
+      }
+
+      .cp-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 18px;
+        border: 2px solid var(--border);
+        background: var(--surface);
+        position: relative;
+        z-index: 1;
+      }
+      .cp-card.active .cp-icon {
+        border-color: var(--violet);
+        box-shadow: 0 0 16px rgba(124, 58, 237, 0.5);
+        background: var(--violet-dim);
+      }
+      .cp-card.completed .cp-icon {
+        border-color: var(--green);
+        box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+        background: var(--green-dim);
+      }
+      .cp-card.boss .cp-icon {
+        border-color: var(--gold);
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0.6);
+        background: var(--gold-dim);
+        font-size: 22px;
+      }
+
+      .cp-info {
+        flex: 1;
+      }
+      .cp-phase {
+        font-size: 10px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 2px;
+      }
+      .cp-name {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.1;
+      }
+      .cp-card.active .cp-name {
+        color: #a78bfa;
+      }
+      .cp-card.completed .cp-name {
+        color: var(--green);
+      }
+      .cp-card.boss .cp-name {
+        color: var(--gold);
+      }
+
+      .cp-range {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 3px;
+      }
+
+      .cp-badge {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 6px;
+        letter-spacing: 1px;
+        flex-shrink: 0;
+      }
+      .badge-locked {
+        background: rgba(100, 116, 139, 0.15);
+        color: var(--muted);
+      }
+      .badge-active {
+        background: rgba(124, 58, 237, 0.2);
+        color: #a78bfa;
+      }
+      .badge-completed {
+        background: rgba(16, 185, 129, 0.15);
+        color: var(--green);
+      }
+      .badge-boss {
+        background: rgba(245, 158, 11, 0.2);
+        color: var(--gold);
+      }
+
+      .cp-chevron {
+        color: var(--muted);
+        font-size: 12px;
+        transition: transform 0.2s;
+        flex-shrink: 0;
+      }
+      .cp-card.open .cp-chevron {
+        transform: rotate(180deg);
+      }
+
+      /* ─── CHECKPOINT BODY ─── */
+      .cp-body {
+        display: none;
+        padding: 20px 20px 20px 78px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-top: none;
+        border-radius: 0 0 14px 14px;
+        margin-top: -4px;
+      }
+      .cp-card.open .cp-body {
+        display: block;
+      }
+      .cp-card.open .cp-header {
+        border-radius: 14px 14px 0 0;
+      }
+
+      .checklist-section-title {
+        font-size: 10px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 12px;
+      }
+      .checklist {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .checklist li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 14px;
+        color: var(--sub);
+        line-height: 1.4;
+      }
+      .checklist li label {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        cursor: pointer;
+        width: 100%;
+      }
+      .checklist li input[type="checkbox"] {
+        display: none;
+      }
+      .check-box {
+        width: 18px;
+        height: 18px;
+        border-radius: 5px;
+        border: 1.5px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 1px;
+        transition: all 0.15s;
+        font-size: 11px;
+      }
+      .checklist li input:checked ~ .check-box {
+        background: var(--green);
+        border-color: var(--green);
+        color: white;
+      }
+      .checklist li input:checked ~ .check-text {
+        text-decoration: line-through;
+        color: var(--muted);
+      }
+      .checklist li input:checked ~ .check-box::after {
+        content: "✓";
+      }
+
+      .cp-unlock-row {
+        margin-top: 20px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+      }
+      .unlock-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-family: "Rajdhani", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s;
+      }
+      .unlock-btn.violet {
+        background: var(--violet);
+        color: white;
+      }
+      .unlock-btn.violet:hover {
+        background: #6d28d9;
+        transform: translateY(-1px);
+      }
+      .unlock-btn.gold {
+        background: var(--gold);
+        color: #0a0a14;
+      }
+      .unlock-btn.gold:hover {
+        background: #d97706;
+        transform: translateY(-1px);
+      }
+      .unlock-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        transform: none !important;
+      }
+      .unlock-hint {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 8px;
+      }
+
+      /* ─── DAILY HABITS ─── */
+      .daily-section {
+        max-width: 640px;
+        margin: 48px auto 0;
+        padding: 0 24px;
+      }
+      .section-heading {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+      .section-heading h2 {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+      }
+      .daily-date {
+        font-size: 12px;
+        color: var(--muted);
+        font-family: "Rajdhani", sans-serif;
+      }
+      .daily-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px;
+      }
+      .daily-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      @media (max-width: 480px) {
+        .daily-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .daily-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .daily-item:hover {
+        border-color: var(--violet);
+      }
+      .daily-item.checked {
+        border-color: var(--green);
+        background: rgba(16, 185, 129, 0.07);
+      }
+      .daily-item input[type="checkbox"] {
+        display: none;
+      }
+      .daily-icon {
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+      .daily-text {
+        font-size: 13px;
+        color: var(--sub);
+        line-height: 1.3;
+      }
+      .daily-item.checked .daily-text {
+        color: var(--green);
+      }
+      .daily-streak {
+        margin-top: 16px;
+        padding-top: 14px;
+        border-top: 1px solid var(--border);
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .streak-val {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--gold);
+      }
+
+      /* ─── STATS ROW ─── */
+      .stats-row {
+        max-width: 640px;
+        margin: 32px auto 0;
+        padding: 0 24px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+      .stat-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+      }
+      .stat-val {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1;
+      }
+      .stat-label {
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+
+      /* ─── TOAST ─── */
+      .toast {
+        position: fixed;
+        bottom: 28px;
+        left: 50%;
+        transform: translateX(-50%) translateY(80px);
+        background: var(--green);
+        color: white;
+        font-family: "Rajdhani", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        padding: 12px 24px;
+        border-radius: 10px;
+        z-index: 999;
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        white-space: nowrap;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      }
+      .toast.show {
+        transform: translateX(-50%) translateY(0);
+      }
+      .toast.gold-toast {
+        background: var(--gold);
+        color: #0a0a14;
+      }
+
+      /* ─── CONFETTI ─── */
+      .confetti-piece {
+        position: fixed;
+        width: 8px;
+        height: 8px;
+        pointer-events: none;
+        z-index: 9999;
+        border-radius: 2px;
+        animation: confettiFall 2.5s ease-in forwards;
+      }
+      @keyframes confettiFall {
+        0% {
+          transform: translateY(-20px) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100vh) rotate(720deg);
+          opacity: 0;
+        }
+      }
+
+      /* ═══════════════════════════════════════════
+         ─── TREINO SECTION ───
+      ═══════════════════════════════════════════ */
+      .workout-section {
+        max-width: 640px;
+        margin: 56px auto 0;
+        padding: 0 24px;
+      }
+      .section-heading-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        gap: 12px;
+      }
+      .section-heading-row h2 {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .btn-add-workout {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--violet);
+        color: white;
+        border: none;
+        font-family: "Rajdhani", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.1s;
+        white-space: nowrap;
+      }
+      .btn-add-workout:hover {
+        background: #6d28d9;
+        transform: translateY(-1px);
+      }
+
+      /* Workout day cards */
+      .workout-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .workout-day-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+        transition: border-color 0.2s;
+      }
+      .workout-day-card:hover {
+        border-color: var(--violet);
+      }
+      .workout-day-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 20px;
+        cursor: pointer;
+        user-select: none;
+        gap: 12px;
+      }
+      .workout-day-info {
+        flex: 1;
+      }
+      .workout-day-label {
+        font-size: 10px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 2px;
+      }
+      .workout-day-name {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1.1;
+      }
+      .workout-day-count {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .workout-day-actions {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .btn-icon {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        border-radius: 7px;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.15s;
+      }
+      .btn-icon:hover {
+        background: rgba(239,68,68,0.15);
+        border-color: var(--red);
+        color: var(--red);
+      }
+      .btn-icon.edit:hover {
+        background: rgba(124,58,237,0.15);
+        border-color: var(--violet);
+        color: #a78bfa;
+      }
+      .workout-day-chevron {
+        color: var(--muted);
+        font-size: 12px;
+        transition: transform 0.2s;
+        flex-shrink: 0;
+      }
+      .workout-day-card.open .workout-day-chevron {
+        transform: rotate(180deg);
+      }
+      .workout-day-body {
+        display: none;
+        border-top: 1px solid var(--border);
+        padding: 16px 20px;
+        background: var(--surface);
+      }
+      .workout-day-card.open .workout-day-body {
+        display: block;
+      }
+
+      /* Exercise list inside day */
+      .exercise-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .exercise-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 12px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        transition: border-color 0.15s;
+      }
+      .exercise-item:hover {
+        border-color: var(--violet);
+      }
+      .exercise-gif-thumb {
+        width: 52px;
+        height: 52px;
+        border-radius: 8px;
+        object-fit: cover;
+        background: var(--border);
+        flex-shrink: 0;
+        cursor: pointer;
+        border: 1px solid var(--border);
+        transition: transform 0.15s;
+      }
+      .exercise-gif-thumb:hover {
+        transform: scale(1.05);
+        border-color: var(--violet);
+      }
+      .exercise-thumb-placeholder {
+        width: 52px;
+        height: 52px;
+        border-radius: 8px;
+        background: var(--border);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        border: 1px solid transparent;
+      }
+      .exercise-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .exercise-name {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .exercise-details {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .exercise-category-badge {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        padding: 2px 8px;
+        border-radius: 4px;
+        background: rgba(124,58,237,0.15);
+        color: #a78bfa;
+        text-transform: uppercase;
+        flex-shrink: 0;
+      }
+      .btn-remove-exercise {
+        background: none;
+        border: none;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 1;
+        padding: 4px;
+        border-radius: 4px;
+        transition: color 0.15s;
+        flex-shrink: 0;
+      }
+      .btn-remove-exercise:hover {
+        color: var(--red);
+      }
+      .add-exercise-row {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid var(--border);
+      }
+      .btn-add-exercise {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(124,58,237,0.1);
+        border: 1px dashed var(--violet);
+        color: #a78bfa;
+        font-family: "Rajdhani", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        width: 100%;
+        justify-content: center;
+        transition: background 0.2s;
+      }
+      .btn-add-exercise:hover {
+        background: rgba(124,58,237,0.2);
+      }
+      .empty-workout {
+        text-align: center;
+        padding: 24px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .empty-workout .empty-icon {
+        font-size: 36px;
+        margin-bottom: 8px;
+      }
+      .no-workouts-msg {
+        text-align: center;
+        padding: 48px 24px;
+        background: var(--card);
+        border: 1px dashed var(--border);
+        border-radius: 14px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .no-workouts-msg .big-icon {
+        font-size: 48px;
+        margin-bottom: 12px;
+      }
+      .no-workouts-msg p {
+        margin-bottom: 16px;
+      }
+
+      /* ═══════════════════════════════════════════
+         ─── MODALS ───
+      ═══════════════════════════════════════════ */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.75);
+        backdrop-filter: blur(4px);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s;
+      }
+      .modal-overlay.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .modal {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        width: 100%;
+        max-width: 520px;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        transform: translateY(20px) scale(0.97);
+        transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        overflow: hidden;
+      }
+      .modal-overlay.open .modal {
+        transform: translateY(0) scale(1);
+      }
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 24px 16px;
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
+      }
+      .modal-title {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .modal-close {
+        background: none;
+        border: none;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 20px;
+        line-height: 1;
+        padding: 4px;
+        border-radius: 6px;
+        transition: color 0.15s;
+      }
+      .modal-close:hover {
+        color: var(--text);
+      }
+      .modal-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px 24px;
+        scrollbar-width: thin;
+        scrollbar-color: var(--border) transparent;
+      }
+      .modal-footer {
+        padding: 16px 24px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        flex-shrink: 0;
+      }
+      .btn-modal-cancel {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid var(--border);
+        color: var(--sub);
+        font-family: "Rajdhani", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 9px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .btn-modal-cancel:hover {
+        background: rgba(255,255,255,0.1);
+      }
+      .btn-modal-confirm {
+        background: var(--violet);
+        border: none;
+        color: white;
+        font-family: "Rajdhani", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 9px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .btn-modal-confirm:hover {
+        background: #6d28d9;
+      }
+
+      /* Form fields */
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 18px;
+      }
+      .form-label {
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 500;
+      }
+      .form-input {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        color: var(--text);
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        padding: 10px 14px;
+        outline: none;
+        transition: border-color 0.15s;
+        width: 100%;
+      }
+      .form-input:focus {
+        border-color: var(--violet);
+      }
+
+      /* Exercise search modal */
+      .exercise-search-bar {
+        position: relative;
+        margin-bottom: 14px;
+      }
+      .exercise-search-bar input {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        color: var(--text);
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        padding: 10px 14px 10px 38px;
+        outline: none;
+        transition: border-color 0.15s;
+        width: 100%;
+      }
+      .exercise-search-bar input:focus {
+        border-color: var(--violet);
+      }
+      .exercise-search-bar .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        font-size: 14px;
+        pointer-events: none;
+      }
+      .category-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 14px;
+      }
+      .category-chip {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--sub);
+        font-size: 11px;
+        font-weight: 500;
+        padding: 4px 10px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
+      }
+      .category-chip:hover,
+      .category-chip.active {
+        background: rgba(124,58,237,0.15);
+        border-color: var(--violet);
+        color: #a78bfa;
+      }
+      .exercise-search-results {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-height: 340px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--border) transparent;
+      }
+      .exercise-result-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .exercise-result-item:hover {
+        border-color: var(--violet);
+        background: rgba(124,58,237,0.06);
+      }
+      .exercise-result-item.selected {
+        border-color: var(--green);
+        background: rgba(16,185,129,0.07);
+      }
+      .ex-thumb {
+        width: 48px;
+        height: 48px;
+        border-radius: 7px;
+        object-fit: cover;
+        background: var(--border);
+        flex-shrink: 0;
+      }
+      .ex-thumb-placeholder {
+        width: 48px;
+        height: 48px;
+        border-radius: 7px;
+        background: var(--border);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+      }
+      .ex-result-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .ex-result-name {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .ex-result-cat {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .ex-select-icon {
+        font-size: 18px;
+        color: var(--muted);
+        flex-shrink: 0;
+        transition: color 0.15s;
+      }
+      .exercise-result-item.selected .ex-select-icon {
+        color: var(--green);
+      }
+      .search-loading {
+        text-align: center;
+        padding: 24px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .sets-reps-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid var(--border);
+      }
+
+      /* Inline editable inputs inside exercise cards */
+      .ex-inline-fields {
+        display: flex;
+        gap: 6px;
+        margin-top: 5px;
+        flex-wrap: wrap;
+      }
+      .ex-inline-field {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 2px 6px;
+        transition: border-color 0.15s;
+      }
+      .ex-inline-field:focus-within {
+        border-color: var(--violet);
+      }
+      .ex-inline-label {
+        font-size: 10px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--muted);
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .ex-inline-input {
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--text);
+        font-family: "Rajdhani", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        width: 36px;
+        text-align: center;
+        padding: 0;
+      }
+      .ex-inline-input.wide {
+        width: 46px;
+      }
+
+      /* GIF viewer modal */
+      .gif-viewer-modal {
+        max-width: 420px;
+      }
+      .gif-viewer-img {
+        width: 100%;
+        border-radius: 10px;
+        display: block;
+        margin-bottom: 12px;
+      }
+      .gif-viewer-name {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 6px;
+      }
+      .gif-viewer-cat {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      /* Spinner */
+      .spinner {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        border: 2px solid rgba(255,255,255,0.2);
+        border-top-color: var(--violet);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        vertical-align: middle;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <p class="eyebrow">Missão Principal</p>
+      <h1>JORNADA <span>99KG</span></h1>
+      <p class="subtitle">
+        Cada checkpoint é uma fase desbloqueada. Uma batalha de cada vez.
+      </p>
+
+      <div class="weight-box">
+        <span class="weight-label">Peso atual</span>
+        <div class="weight-input-row">
+          <input
+            type="number"
+            id="currentWeight"
+            step="0.01"
+            min="90"
+            max="150"
+            placeholder="105.65"
+          />
+          <span>kg</span>
+        </div>
+        <button class="weight-save-btn" onclick="saveWeight()">
+          Atualizar
+        </button>
+      </div>
+    </header>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-val" id="statLost">—</div>
+        <div class="stat-label">Perdido</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" id="statLeft">—</div>
+        <div class="stat-label">Faltam</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" id="statPct">—</div>
+        <div class="stat-label">Progresso</div>
+      </div>
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div class="global-progress">
+      <div class="gp-header">
+        <span class="gp-title">Barra de progresso</span>
+        <span class="gp-pct" id="gpPct">0%</span>
+      </div>
+      <div class="gp-bar-bg">
+        <div class="gp-bar-fill" id="gpFill" style="width: 0%"></div>
+      </div>
+      <div class="gp-endpoints">
+        <span class="start">114 kg (início do ano)</span>
+        <span class="end">99 kg 🏆</span>
+      </div>
+    </div>
+
+    <!-- MAP -->
+    <div class="map-section">
+      <p class="map-title">Mapa da jornada</p>
+      <div class="checkpoints-list" id="checkpointsList">
+        <!-- CP1 -->
+        <div class="cp-card" id="cp1" data-cp="1">
+          <div class="cp-header" onclick="toggleCard(1)">
+            <div class="cp-icon">⚔️</div>
+            <div class="cp-info">
+              <div class="cp-phase">Fase 01</div>
+              <div class="cp-name">Primeiro Sangue</div>
+              <div class="cp-range">105,65 → 103,5 kg</div>
+            </div>
+            <span class="cp-badge" id="badge1">Ativo</span>
+            <span class="cp-chevron" id="chevron1">▼</span>
+          </div>
+          <div class="cp-body" id="body1">
+            <p class="checklist-section-title">Missões desta fase</p>
+            <ul class="checklist" id="list1">
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="1" data-idx="0" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Calculou o TDEE atual e definiu o alvo calórico</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="1" data-idx="1" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Começou a registrar o que come por pelo menos 2
+                    semanas</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="1" data-idx="2" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Manteve 4+ treinos por 2 semanas seguidas</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="1" data-idx="3" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Tomou creatina todos os dias da fase</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="1" data-idx="4" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Bateu 140g+ de proteína por 5 dias em uma semana</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="1" data-idx="5" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Dormiu 7h+ por 5 dias em uma semana</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="1" data-idx="6" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Ficou 1 semana sem energético</span
+                  ></label
+                >
+              </li>
+            </ul>
+            <div class="cp-unlock-row">
+              <button
+                class="unlock-btn violet"
+                id="unlockBtn1"
+                onclick="completeCheckpoint(1)"
+              >
+                🎯 Marcar fase como concluída
+              </button>
+              <p class="unlock-hint">Desbloqueie quando chegar em ≤ 103,5 kg</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CP2 -->
+        <div class="cp-card locked" id="cp2" data-cp="2">
+          <div class="cp-header" onclick="toggleCard(2)">
+            <div class="cp-icon">🔥</div>
+            <div class="cp-info">
+              <div class="cp-phase">Fase 02</div>
+              <div class="cp-name">Em Chamas</div>
+              <div class="cp-range">103,5 → 101,5 kg</div>
+            </div>
+            <span class="cp-badge badge-locked" id="badge2">Bloqueado</span>
+            <span class="cp-chevron" id="chevron2">▼</span>
+          </div>
+          <div class="cp-body" id="body2">
+            <p class="checklist-section-title">Missões desta fase</p>
+            <ul class="checklist" id="list2">
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="2" data-idx="0" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Recalculou o TDEE para o novo peso</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="2" data-idx="1" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Aumentou carga em pelo menos 1 exercício principal</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="2" data-idx="2" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Adicionou 10 min de cardio extra em pelo menos 3
+                    treinos</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="2" data-idx="3" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Manteve 4+ treinos por 3 semanas seguidas</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="2" data-idx="4" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Fez a semana de manutenção estratégica (sem déficit)</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="2" data-idx="5" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Adicionou sardinha ou ovo extra na rotina para
+                    proteína</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="2" data-idx="6" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Bateu 160g+ de proteína por 5 dias em uma semana</span
+                  ></label
+                >
+              </li>
+            </ul>
+            <div class="cp-unlock-row">
+              <button
+                class="unlock-btn violet"
+                id="unlockBtn2"
+                onclick="completeCheckpoint(2)"
+              >
+                🎯 Marcar fase como concluída
+              </button>
+              <p class="unlock-hint">Desbloqueie quando chegar em ≤ 101,5 kg</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CP3 -->
+        <div class="cp-card locked" id="cp3" data-cp="3">
+          <div class="cp-header" onclick="toggleCard(3)">
+            <div class="cp-icon">⚡</div>
+            <div class="cp-info">
+              <div class="cp-phase">Fase 03</div>
+              <div class="cp-name">Sem Volta</div>
+              <div class="cp-range">101,5 → 100 kg</div>
+            </div>
+            <span class="cp-badge badge-locked" id="badge3">Bloqueado</span>
+            <span class="cp-chevron" id="chevron3">▼</span>
+          </div>
+          <div class="cp-body" id="body3">
+            <p class="checklist-section-title">Missões desta fase</p>
+            <ul class="checklist" id="list3">
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="3" data-idx="0" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Recalculou o TDEE novamente para o peso atual</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="3" data-idx="1" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Está progredindo em carga em pelo menos 2 exercícios</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="3" data-idx="2" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Manteve 4+ treinos por semana por 4 semanas seguidas</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="3" data-idx="3" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Introduziu frutas fixas no café da manhã todos os
+                    dias</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="3" data-idx="4" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Está tomando whey 2x por dia consistentemente</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="3" data-idx="5" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Uma semana sem nenhum energético</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="3" data-idx="6" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Consegue sentir a diferença nas roupas</span
+                  ></label
+                >
+              </li>
+            </ul>
+            <div class="cp-unlock-row">
+              <button
+                class="unlock-btn violet"
+                id="unlockBtn3"
+                onclick="completeCheckpoint(3)"
+              >
+                🎯 Marcar fase como concluída
+              </button>
+              <p class="unlock-hint">Desbloqueie quando chegar em ≤ 100 kg</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOSS -->
+        <div class="cp-card boss locked" id="cp4" data-cp="4">
+          <div class="cp-header" onclick="toggleCard(4)">
+            <div class="cp-icon">👑</div>
+            <div class="cp-info">
+              <div class="cp-phase">Boss Final</div>
+              <div class="cp-name">99 Club</div>
+              <div class="cp-range">A meta. O marco. O começo.</div>
+            </div>
+            <span class="cp-badge badge-locked" id="badge4">Bloqueado</span>
+            <span class="cp-chevron" id="chevron4">▼</span>
+          </div>
+          <div class="cp-body" id="body4">
+            <p class="checklist-section-title">Missões do boss</p>
+            <ul class="checklist" id="list4">
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="4" data-idx="0" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Pesou ≤ 99 kg na balança (de manhã, em jejum)</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="4" data-idx="1" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Confirmou o peso por 2 dias seguidos</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="4" data-idx="2" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Refletiu sobre o que mudou desde os 114 kg</span
+                  ></label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" data-cp="4" data-idx="3" /><span
+                    class="check-box"
+                  ></span
+                  ><span class="check-text"
+                    >Definiu o próximo objetivo (manutenção ou nova meta)</span
+                  ></label
+                >
+              </li>
+            </ul>
+            <div class="cp-unlock-row">
+              <button
+                class="unlock-btn gold"
+                id="unlockBtn4"
+                onclick="completeCheckpoint(4)"
+              >
+                👑 ATIVAR 99 CLUB
+              </button>
+              <p class="unlock-hint">O boss final. Você chegou lá.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAILY HABITS -->
+    <div class="daily-section">
+      <div class="section-heading">
+        <h2>Hábitos do dia</h2>
+        <span class="daily-date" id="dailyDate"></span>
+      </div>
+      <div class="daily-card">
+        <div class="daily-grid" id="dailyGrid">
+          <label class="daily-item" id="dh0">
+            <input type="checkbox" data-dh="0" onchange="toggleDaily(0)" />
+            <span class="daily-icon">🏋️</span>
+            <span class="daily-text">Treinou hoje</span>
+          </label>
+          <label class="daily-item" id="dh1">
+            <input type="checkbox" data-dh="1" onchange="toggleDaily(1)" />
+            <span class="daily-icon">🥩</span>
+            <span class="daily-text">Bateu a proteína (≥140g)</span>
+          </label>
+          <label class="daily-item" id="dh2">
+            <input type="checkbox" data-dh="2" onchange="toggleDaily(2)" />
+            <span class="daily-icon">💧</span>
+            <span class="daily-text">Bebeu 2L+ de água</span>
+          </label>
+          <label class="daily-item" id="dh3">
+            <input type="checkbox" data-dh="3" onchange="toggleDaily(3)" />
+            <span class="daily-icon">😴</span>
+            <span class="daily-text">Dormiu 7h+ ontem</span>
+          </label>
+          <label class="daily-item" id="dh4">
+            <input type="checkbox" data-dh="4" onchange="toggleDaily(4)" />
+            <span class="daily-icon">🥛</span>
+            <span class="daily-text">Tomou o whey</span>
+          </label>
+          <label class="daily-item" id="dh5">
+            <input type="checkbox" data-dh="5" onchange="toggleDaily(5)" />
+            <span class="daily-icon">🍌</span>
+            <span class="daily-text">Comeu fruta</span>
+          </label>
+        </div>
+        <div class="daily-streak">
+          🔥 <span class="streak-val" id="streakVal">0</span>&nbsp;dias com tudo
+          marcado esta semana
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════ MEUS TREINOS ═══════════════════════ -->
+    <div class="workout-section" id="workoutSection">
+      <div class="section-heading-row">
+        <h2>💪 Meus Treinos</h2>
+        <button class="btn-add-workout" id="btnNewWorkoutDay" onclick="openNewDayModal()">
+          + Novo Dia
+        </button>
+      </div>
+      <div class="workout-list" id="workoutList">
+        <!-- rendered by JS -->
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ═══════════════ MODAL: NOVO DIA DE TREINO ═══════════════ -->
+    <div class="modal-overlay" id="modalNewDay">
+      <div class="modal">
+        <div class="modal-header">
+          <span class="modal-title" id="modalNewDayTitle">Novo Dia de Treino</span>
+          <button class="modal-close" onclick="closeModal('modalNewDay')">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="inputDayName">Nome do dia</label>
+            <input class="form-input" id="inputDayName" type="text"
+              placeholder="Ex: Peito e Tríceps, Puxada, Pernas..." maxlength="40" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="inputDayNotes">Observações (opcional)</label>
+            <input class="form-input" id="inputDayNotes" type="text"
+              placeholder="Ex: Segunda e Quinta" maxlength="60" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-modal-cancel" onclick="closeModal('modalNewDay')">Cancelar</button>
+          <button class="btn-modal-confirm" onclick="saveDay()">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ MODAL: BUSCAR EXERCÍCIO ═══════════════ -->
+    <div class="modal-overlay" id="modalAddExercise">
+      <div class="modal">
+        <div class="modal-header">
+          <span class="modal-title">Adicionar Exercício</span>
+          <button class="modal-close" onclick="closeModal('modalAddExercise')">✕</button>
+        </div>
+        <div class="modal-body">
+          <!-- Search -->
+          <div class="exercise-search-bar">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="exerciseSearchInput"
+              placeholder="Buscar exercício..."
+              oninput="debounceSearch(this.value)" />
+          </div>
+          <!-- Category chips -->
+          <div class="category-chips" id="categoryChips">
+            <span class="category-chip active" data-cat="" onclick="selectCategory(this, '')">Todos</span>
+            <span class="category-chip" data-cat="Bíceps" onclick="selectCategory(this, 'Bíceps')">Bíceps</span>
+            <span class="category-chip" data-cat="Tríceps" onclick="selectCategory(this, 'Tríceps')">Tríceps</span>
+            <span class="category-chip" data-cat="Peitoral" onclick="selectCategory(this, 'Peitoral')">Peitoral</span>
+            <span class="category-chip" data-cat="Costas" onclick="selectCategory(this, 'Costas')">Costas</span>
+            <span class="category-chip" data-cat="Ombros" onclick="selectCategory(this, 'Ombros')">Ombros</span>
+            <span class="category-chip" data-cat="Pernas" onclick="selectCategory(this, 'Pernas')">Pernas</span>
+            <span class="category-chip" data-cat="Glúteos" onclick="selectCategory(this, 'Glúteos')">Glúteos</span>
+            <span class="category-chip" data-cat="Cardio" onclick="selectCategory(this, 'Cardio')">Cardio</span>
+            <span class="category-chip" data-cat="Antebraços" onclick="selectCategory(this, 'Antebraços')">Antebraços</span>
+            <span class="category-chip" data-cat="Calistenia" onclick="selectCategory(this, 'Calistenia')">Calistenia</span>
+            <span class="category-chip" data-cat="Funcional e HIT" onclick="selectCategory(this, 'Funcional e HIT')">Funcional</span>
+            <span class="category-chip" data-cat="Eretor Lombar" onclick="selectCategory(this, 'Eretor Lombar')">Lombar</span>
+            <span class="category-chip" data-cat="Panturrilhas" onclick="selectCategory(this, 'Panturrilhas')">Panturrilhas</span>
+            <span class="category-chip" data-cat="Trapézio" onclick="selectCategory(this, 'Trapézio')">Trapézio</span>
+            <span class="category-chip" data-cat="Mobilidade" onclick="selectCategory(this, 'Mobilidade')">Mobilidade</span>
+          </div>
+          <!-- Results -->
+          <div class="exercise-search-results" id="exerciseResults">
+            <div class="search-loading">Digite para buscar ou escolha uma categoria</div>
+          </div>
+          <!-- Sets/reps for selected exercise -->
+          <!-- Sets/reps always visible -->
+          <div class="sets-reps-row" id="setsRepsRow">
+            <div class="form-group" style="margin-bottom:0">
+              <label class="form-label">Séries</label>
+              <input class="form-input" id="inputSeries" type="number" min="1" max="20" value="3" placeholder="3" />
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label class="form-label">Reps</label>
+              <input class="form-input" id="inputReps" type="text" value="12" placeholder="12" />
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label class="form-label">Carga (kg)</label>
+              <input class="form-input" id="inputLoad" type="text" value="" placeholder="—" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-modal-cancel" onclick="closeModal('modalAddExercise')">Cancelar</button>
+          <button class="btn-modal-confirm" id="btnConfirmExercise" onclick="confirmAddExercise()" disabled>Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ MODAL: VISUALIZAR GIF ═══════════════ -->
+    <div class="modal-overlay" id="modalGifViewer">
+      <div class="modal gif-viewer-modal">
+        <div class="modal-header">
+          <span class="modal-title">Visualizar Exercício</span>
+          <button class="modal-close" onclick="closeModal('modalGifViewer')">✕</button>
+        </div>
+        <div class="modal-body" style="text-align:center;">
+          <img id="gifViewerImg" class="gif-viewer-img" src="" alt="GIF do exercício" />
+          <div class="gif-viewer-name" id="gifViewerName"></div>
+          <div class="gif-viewer-cat" id="gifViewerCat"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="exercises.js"></script>
+    <script>
+      const GIF_BASE = 'https://www.gifdotreino.com/';
+      const START_WEIGHT = 114;
+      const GOAL_WEIGHT = 99;
+      const INIT_WEIGHT = 105.65;
+
+      // ── State ──────────────────────────────────────────────
+      function getState() {
+        try {
+          return JSON.parse(localStorage.getItem("quest99_state")) || {};
+        } catch {
+          return {};
+        }
+      }
+      function saveState(s) {
+        localStorage.setItem("quest99_state", JSON.stringify(s));
+      }
+
+      // ── Init ───────────────────────────────────────────────
+      window.addEventListener("DOMContentLoaded", () => {
+        const s = getState();
+        if (!s.weight) s.weight = INIT_WEIGHT;
+        if (!s.cpCompleted) s.cpCompleted = {};
+        if (!s.cpChecks) s.cpChecks = {};
+        if (!s.daily) s.daily = {};
+        if (!s.streak) s.streak = 0;
+        if (!s.workoutDays) s.workoutDays = [];
+        saveState(s);
+
+        document.getElementById("currentWeight").value = s.weight;
+        updateProgress(s.weight);
+        renderCheckpoints(s);
+        renderDaily(s);
+        renderDate();
+        renderWorkouts();
+      });
+
+      // ── Weight ─────────────────────────────────────────────
+      function saveWeight() {
+        const w = parseFloat(document.getElementById("currentWeight").value);
+        if (isNaN(w) || w < 50 || w > 200) {
+          showToast("Peso inválido!", false);
+          return;
+        }
+        const s = getState();
+        s.weight = w;
+        saveState(s);
+        updateProgress(w);
+        renderCheckpoints(s);
+        showToast(`Peso atualizado: ${w} kg`, false);
+      }
+
+      function updateProgress(w) {
+        const total = START_WEIGHT - GOAL_WEIGHT;
+        const done = Math.max(0, START_WEIGHT - w);
+        const pct = Math.min(100, Math.round((done / total) * 100));
+        document.getElementById("gpFill").style.width = pct + "%";
+        document.getElementById("gpPct").textContent = pct + "%";
+        document.getElementById("statLost").textContent =
+          (START_WEIGHT - w > 0 ? "-" : "") +
+          Math.abs(START_WEIGHT - w).toFixed(1) +
+          " kg";
+        document.getElementById("statLeft").textContent =
+          Math.max(0, w - GOAL_WEIGHT).toFixed(1) + " kg";
+        document.getElementById("statPct").textContent = pct + "%";
+      }
+
+      // ── Checkpoints ────────────────────────────────────────
+      const CP_DATA = {
+        1: { threshold: 103.5, nChecks: 7 },
+        2: { threshold: 101.5, nChecks: 7 },
+        3: { threshold: 100.0, nChecks: 7 },
+        4: { threshold: 99.0, nChecks: 4 },
+      };
+
+      function renderCheckpoints(s) {
+        const w = s.weight;
+        for (let cp = 1; cp <= 4; cp++) {
+          const card = document.getElementById(`cp${cp}`);
+          const badge = document.getElementById(`badge${cp}`);
+
+          const prevDone = cp === 1 || s.cpCompleted[cp - 1];
+          const isDone = !!s.cpCompleted[cp];
+
+          card.className = "cp-card" + (cp === 4 ? " boss" : "");
+
+          if (isDone) {
+            card.classList.add("completed");
+            badge.textContent = "✓ Concluído";
+            badge.className = "cp-badge badge-completed";
+          } else if (!prevDone) {
+            card.classList.add("locked");
+            badge.textContent = "Bloqueado";
+            badge.className = "cp-badge badge-locked";
+          } else {
+            card.classList.add("active");
+            badge.textContent = cp === 4 ? "Boss!" : "Ativo";
+            badge.className =
+              cp === 4 ? "cp-badge badge-boss" : "cp-badge badge-active";
+          }
+
+          const checks = s.cpChecks[cp] || {};
+          const inputs = document.querySelectorAll(`input[data-cp="${cp}"]`);
+          inputs.forEach((inp) => {
+            const idx = inp.dataset.idx;
+            inp.checked = !!checks[idx];
+            syncCheckVisual(inp);
+            if (isDone) inp.disabled = true;
+            inp.addEventListener("change", () =>
+              onCpCheck(cp, idx, inp.checked),
+            );
+          });
+
+          if (card.classList.contains("open")) {
+            document.getElementById(`body${cp}`).style.display = "block";
+          }
+        }
+      }
+
+      function onCpCheck(cp, idx, val) {
+        const s = getState();
+        if (!s.cpChecks[cp]) s.cpChecks[cp] = {};
+        s.cpChecks[cp][idx] = val;
+        saveState(s);
+        const inp = document.querySelector(
+          `input[data-cp="${cp}"][data-idx="${idx}"]`,
+        );
+        syncCheckVisual(inp);
+      }
+
+      function syncCheckVisual(inp) {
+        const box = inp.nextElementSibling;
+        if (inp.checked) {
+          box.style.background = "var(--green)";
+          box.style.borderColor = "var(--green)";
+          box.style.color = "white";
+          box.textContent = "✓";
+        } else {
+          box.style.background = "";
+          box.style.borderColor = "";
+          box.style.color = "";
+          box.textContent = "";
+        }
+      }
+
+      function toggleCard(cp) {
+        const s = getState();
+        const prevDone = cp === 1 || s.cpCompleted[cp - 1];
+        if (!prevDone && !s.cpCompleted[cp]) return;
+
+        const card = document.getElementById(`cp${cp}`);
+        const body = document.getElementById(`body${cp}`);
+        const isOpen = card.classList.contains("open");
+        card.classList.toggle("open", !isOpen);
+        body.style.display = isOpen ? "none" : "block";
+      }
+
+      function completeCheckpoint(cp) {
+        const s = getState();
+        if (s.cpCompleted[cp]) return;
+        s.cpCompleted[cp] = true;
+        saveState(s);
+        renderCheckpoints(s);
+
+        if (cp === 4) {
+          showToast("👑 BEM VINDO AO 99 CLUB!", true);
+          launchConfetti();
+        } else {
+          showToast(
+            `⚡ FASE ${cp} CONCLUÍDA! Próxima fase desbloqueada.`,
+            false,
+          );
+          launchConfetti();
+        }
+      }
+
+      // ── Daily ──────────────────────────────────────────────
+      const TODAY = new Date().toISOString().slice(0, 10);
+
+      function renderDate() {
+        const d = new Date();
+        const opts = { weekday: "long", day: "numeric", month: "long" };
+        document.getElementById("dailyDate").textContent = d.toLocaleDateString(
+          "pt-BR",
+          opts,
+        );
+      }
+
+      function renderDaily(s) {
+        const todayData = (s.daily && s.daily[TODAY]) || {};
+        for (let i = 0; i < 6; i++) {
+          const item = document.getElementById(`dh${i}`);
+          const inp = item.querySelector("input");
+          inp.checked = !!todayData[i];
+          item.classList.toggle("checked", inp.checked);
+        }
+        updateStreak(s);
+      }
+
+      function toggleDaily(idx) {
+        const s = getState();
+        if (!s.daily) s.daily = {};
+        if (!s.daily[TODAY]) s.daily[TODAY] = {};
+        const inp = document.querySelector(`input[data-dh="${idx}"]`);
+        s.daily[TODAY][idx] = inp.checked;
+        const item = document.getElementById(`dh${idx}`);
+        item.classList.toggle("checked", inp.checked);
+        updateStreak(s);
+        saveState(s);
+      }
+
+      function updateStreak(s) {
+        if (!s.daily) {
+          document.getElementById("streakVal").textContent = 0;
+          return;
+        }
+        let count = 0;
+        const now = new Date();
+        for (let i = 0; i < 7; i++) {
+          const d = new Date(now);
+          d.setDate(d.getDate() - i);
+          const key = d.toISOString().slice(0, 10);
+          const day = s.daily[key] || {};
+          const allDone =
+            Object.keys(day).length >= 6 && Object.values(day).every(Boolean);
+          if (allDone) count++;
+        }
+        document.getElementById("streakVal").textContent = count;
+      }
+
+      // ── Toast ──────────────────────────────────────────────
+      function showToast(msg, isGold) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.className = "toast" + (isGold ? " gold-toast" : "") + " show";
+        setTimeout(() => {
+          t.className = "toast" + (isGold ? " gold-toast" : "");
+        }, 3200);
+      }
+
+      // ── Confetti ───────────────────────────────────────────
+      function launchConfetti() {
+        const colors = [
+          "#7c3aed",
+          "#f59e0b",
+          "#10b981",
+          "#a78bfa",
+          "#34d399",
+          "#fbbf24",
+        ];
+        for (let i = 0; i < 60; i++) {
+          setTimeout(() => {
+            const el = document.createElement("div");
+            el.className = "confetti-piece";
+            el.style.cssText = `
+        left: ${Math.random() * 100}vw;
+        top: -10px;
+        background: ${colors[Math.floor(Math.random() * colors.length)]};
+        animation-duration: ${1.5 + Math.random() * 1.5}s;
+        animation-delay: ${Math.random() * 0.4}s;
+        transform: rotate(${Math.random() * 360}deg);
+      `;
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 3000);
+          }, i * 25);
+        }
+      }
+
+      // ═══════════════════════════════════════════
+      // ─── WORKOUT FEATURE ───
+      // ═══════════════════════════════════════════
+
+      let editingDayId = null; // null = creating new, string = editing existing
+
+      // ── Render workout list ────────────────────────────────
+      function renderWorkouts() {
+        const s = getState();
+        const days = s.workoutDays || [];
+        const container = document.getElementById('workoutList');
+
+        if (days.length === 0) {
+          container.innerHTML = `
+            <div class="no-workouts-msg">
+              <div class="big-icon">🏋️</div>
+              <p>Nenhum treino salvo ainda.<br>Crie seu primeiro dia de treino!</p>
+              <button class="btn-add-workout" onclick="openNewDayModal()">+ Criar Treino</button>
+            </div>`;
+          return;
+        }
+
+        container.innerHTML = days.map((day, di) => `
+          <div class="workout-day-card" id="wday-${day.id}">
+            <div class="workout-day-header" onclick="toggleWorkoutDay('${day.id}')">
+              <div class="workout-day-info">
+                <div class="workout-day-label">${day.notes || 'Treino'}</div>
+                <div class="workout-day-name">${escHtml(day.name)}</div>
+                <div class="workout-day-count">${day.exercises.length} exercício${day.exercises.length !== 1 ? 's' : ''}</div>
+              </div>
+              <div class="workout-day-actions" onclick="event.stopPropagation()">
+                <button class="btn-icon edit" title="Editar" onclick="openEditDayModal('${day.id}')">✏️</button>
+                <button class="btn-icon" title="Excluir" onclick="deleteDay('${day.id}')">🗑️</button>
+              </div>
+              <span class="workout-day-chevron">▼</span>
+            </div>
+            <div class="workout-day-body" id="wbody-${day.id}">
+              ${renderExerciseList(day)}
+              <div class="add-exercise-row">
+                <button class="btn-add-exercise" onclick="openAddExerciseModal('${day.id}')">+ Adicionar Exercício</button>
+              </div>
+            </div>
+          </div>`
+        ).join('');
+      }
+
+      function renderExerciseList(day) {
+        if (!day.exercises || day.exercises.length === 0) {
+          return `<div class="empty-workout"><div class="empty-icon">💤</div>Nenhum exercício adicionado.</div>`;
+        }
+        return `<div class="exercise-list">` +
+          day.exercises.map((ex, ei) => {
+            const thumbUrl = ex.thumbnail ? GIF_BASE + ex.thumbnail : null;
+            const thumb = thumbUrl
+              ? `<img class="exercise-gif-thumb" src="${thumbUrl}" alt="${escHtml(ex.name)}" loading="lazy"
+                   onclick="viewGif('${escHtml(ex.gifPath)}','${escHtml(ex.name)}','${escHtml(ex.category || '')}')"
+                   onerror="this.style.display='none'; this.nextElementSibling && (this.nextElementSibling.style.display='flex')" />`
+              : `<div class="exercise-thumb-placeholder">🏋️</div>`;
+
+            return `<div class="exercise-item">
+              ${thumb}
+              ${!thumbUrl ? '' : `<div class="exercise-thumb-placeholder" style="display:none;">🏋️</div>`}
+              <div class="exercise-info">
+                <div class="exercise-name">${escHtml(ex.name)}</div>
+                <div class="ex-inline-fields">
+                  <div class="ex-inline-field" title="Séries">
+                    <span class="ex-inline-label">S</span>
+                    <input class="ex-inline-input" type="number" min="1" max="99"
+                      value="${escAttr(ex.series || '3')}"
+                      onchange="updateExercise('${day.id}', ${ei}, 'series', this.value)"
+                      onclick="event.stopPropagation()" title="Séries" />
+                  </div>
+                  <div class="ex-inline-field" title="Repetições">
+                    <span class="ex-inline-label">R</span>
+                    <input class="ex-inline-input wide" type="text"
+                      value="${escAttr(ex.reps || '12')}"
+                      onchange="updateExercise('${day.id}', ${ei}, 'reps', this.value)"
+                      onclick="event.stopPropagation()" title="Repetições" />
+                  </div>
+                  <div class="ex-inline-field" title="Carga (kg)">
+                    <span class="ex-inline-label">kg</span>
+                    <input class="ex-inline-input wide" type="text"
+                      value="${escAttr(ex.load || '')}"
+                      placeholder="—"
+                      onchange="updateExercise('${day.id}', ${ei}, 'load', this.value)"
+                      onclick="event.stopPropagation()" title="Carga" />
+                  </div>
+                </div>
+              </div>
+              ${ex.category ? `<span class="exercise-category-badge">${escHtml(ex.category)}</span>` : ''}
+              <button class="btn-remove-exercise" title="Remover" onclick="removeExercise('${day.id}', ${ei})">✕</button>
+            </div>`;
+          }).join('') +
+          `</div>`;
+      }
+
+      function toggleWorkoutDay(dayId) {
+        const card = document.getElementById(`wday-${dayId}`);
+        const body = document.getElementById(`wbody-${dayId}`);
+        const isOpen = card.classList.contains('open');
+        card.classList.toggle('open', !isOpen);
+        body.style.display = isOpen ? 'none' : 'block';
+      }
+
+      // ── CRUD days ─────────────────────────────────────────
+      function openNewDayModal() {
+        editingDayId = null;
+        document.getElementById('modalNewDayTitle').textContent = 'Novo Dia de Treino';
+        document.getElementById('inputDayName').value = '';
+        document.getElementById('inputDayNotes').value = '';
+        openModal('modalNewDay');
+      }
+
+      function openEditDayModal(dayId) {
+        editingDayId = dayId;
+        const s = getState();
+        const day = s.workoutDays.find(d => d.id === dayId);
+        if (!day) return;
+        document.getElementById('modalNewDayTitle').textContent = 'Editar Dia de Treino';
+        document.getElementById('inputDayName').value = day.name;
+        document.getElementById('inputDayNotes').value = day.notes || '';
+        openModal('modalNewDay');
+      }
+
+      function saveDay() {
+        const name = document.getElementById('inputDayName').value.trim();
+        if (!name) {
+          document.getElementById('inputDayName').focus();
+          return;
+        }
+        const notes = document.getElementById('inputDayNotes').value.trim();
+        const s = getState();
+
+        if (editingDayId) {
+          const day = s.workoutDays.find(d => d.id === editingDayId);
+          if (day) {
+            day.name = name;
+            day.notes = notes;
+          }
+          showToast('Treino atualizado!', false);
+        } else {
+          s.workoutDays.push({ id: uid(), name, notes, exercises: [] });
+          showToast('Treino criado! 💪', false);
+        }
+
+        saveState(s);
+        closeModal('modalNewDay');
+        renderWorkouts();
+      }
+
+      function deleteDay(dayId) {
+        if (!confirm('Excluir este dia de treino?')) return;
+        const s = getState();
+        s.workoutDays = s.workoutDays.filter(d => d.id !== dayId);
+        saveState(s);
+        renderWorkouts();
+        showToast('Treino excluído.', false);
+      }
+
+      // ── Add exercise ───────────────────────────────────────
+      let currentDayId = null;
+      let selectedExercise = null;
+      let searchTimeout = null;
+      let currentCategory = '';
+
+      function openAddExerciseModal(dayId) {
+        currentDayId = dayId;
+        selectedExercise = null;
+        document.getElementById('exerciseSearchInput').value = '';
+        document.getElementById('inputSeries').value = '3';
+        document.getElementById('inputReps').value = '12';
+        document.getElementById('inputLoad').value = '';
+        document.getElementById('btnConfirmExercise').disabled = true;
+
+        // Reset category
+        currentCategory = '';
+        document.querySelectorAll('.category-chip').forEach(c => {
+          c.classList.toggle('active', c.dataset.cat === '');
+        });
+
+        showExerciseResults([]);
+        openModal('modalAddExercise');
+        // Load initial list (all)
+        fetchExercises('', '');
+      }
+
+      function selectCategory(el, cat) {
+        currentCategory = cat;
+        document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+        const q = document.getElementById('exerciseSearchInput').value.trim();
+        fetchExercises(q, cat);
+      }
+
+      function debounceSearch(val) {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => fetchExercises(val, currentCategory), 350);
+      }
+
+      function fetchExercises(query, category) {
+        // Local search — uses EXERCISE_DB embedded from exercises.js (no CORS issues)
+        if (typeof EXERCISE_DB === 'undefined') {
+          document.getElementById('exerciseResults').innerHTML =
+            `<div class="search-loading">⚠️ Banco de exercícios não carregado. Recarregue a página.</div>`;
+          return;
+        }
+
+        const q = query.trim().toLowerCase();
+        let results = EXERCISE_DB;
+
+        // Filter by category (matches path segment)
+        if (category) {
+          results = results.filter(ex =>
+            ex.path && ex.path.includes('/' + category + '/')
+          );
+        }
+
+        // Filter by search text
+        if (q) {
+          results = results.filter(ex =>
+            ex.name && ex.name.toLowerCase().includes(q)
+          );
+        }
+
+        showExerciseResults(results.slice(0, 100));
+      }
+
+      function showExerciseResults(exercises) {
+        const resultsEl = document.getElementById('exerciseResults');
+        if (!exercises || exercises.length === 0) {
+          resultsEl.innerHTML = `<div class="search-loading">Nenhum exercício encontrado.</div>`;
+          return;
+        }
+
+        resultsEl.innerHTML = exercises.map(ex => {
+          const cat = extractCategory(ex.path);
+          const thumbUrl = ex.thumbnail ? GIF_BASE + ex.thumbnail : null;
+          const thumbHtml = thumbUrl
+            ? `<img class="ex-thumb" src="${thumbUrl}" loading="lazy"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'" alt="" />
+               <div class="ex-thumb-placeholder" style="display:none;">🏋️</div>`
+            : `<div class="ex-thumb-placeholder">🏋️</div>`;
+          return `<div class="exercise-result-item" data-path="${escAttr(ex.path)}"
+                    data-name="${escAttr(ex.name)}" data-cat="${escAttr(cat)}"
+                    data-thumb="${escAttr(ex.thumbnail || '')}"
+                    onclick="selectExercise(this)">
+            ${thumbHtml}
+            <div class="ex-result-info">
+              <div class="ex-result-name">${escHtml(ex.name)}</div>
+              <div class="ex-result-cat">${escHtml(cat)}</div>
+            </div>
+            <span class="ex-select-icon">⊕</span>
+          </div>`;
+        }).join('');
+      }
+
+      function selectExercise(el) {
+        // Deselect previous
+        document.querySelectorAll('.exercise-result-item.selected').forEach(e => {
+          e.classList.remove('selected');
+          e.querySelector('.ex-select-icon').textContent = '⊕';
+        });
+
+        el.classList.add('selected');
+        el.querySelector('.ex-select-icon').textContent = '✓';
+
+        selectedExercise = {
+          name: el.dataset.name,
+          gifPath: el.dataset.path,
+          thumbnail: el.dataset.thumb,
+          category: el.dataset.cat,
+        };
+
+        document.getElementById('btnConfirmExercise').disabled = false;
+      }
+
+      function confirmAddExercise() {
+        if (!selectedExercise || !currentDayId) return;
+        const s = getState();
+        const day = s.workoutDays.find(d => d.id === currentDayId);
+        if (!day) return;
+
+        day.exercises.push({
+          ...selectedExercise,
+          series: document.getElementById('inputSeries').value || '3',
+          reps: document.getElementById('inputReps').value || '12',
+          load: document.getElementById('inputLoad').value || '',
+        });
+
+        saveState(s);
+        closeModal('modalAddExercise');
+        renderWorkouts();
+        // Re-open the day card
+        const card = document.getElementById(`wday-${currentDayId}`);
+        const body = document.getElementById(`wbody-${currentDayId}`);
+        if (card && !card.classList.contains('open')) {
+          card.classList.add('open');
+          if (body) body.style.display = 'block';
+        }
+        showToast(`${selectedExercise.name} adicionado! 💪`, false);
+        selectedExercise = null;
+      }
+
+      function updateExercise(dayId, exIndex, field, value) {
+        const s = getState();
+        const day = s.workoutDays.find(d => d.id === dayId);
+        if (!day || !day.exercises[exIndex]) return;
+        day.exercises[exIndex][field] = value;
+        saveState(s);
+        // No full re-render needed — inputs update themselves
+      }
+
+      function removeExercise(dayId, exIndex) {
+        const s = getState();
+        const day = s.workoutDays.find(d => d.id === dayId);
+        if (!day) return;
+        day.exercises.splice(exIndex, 1);
+        saveState(s);
+        renderWorkouts();
+        // Keep day open after removal
+        const card = document.getElementById(`wday-${dayId}`);
+        const body = document.getElementById(`wbody-${dayId}`);
+        if (card) {
+          card.classList.add('open');
+          if (body) body.style.display = 'block';
+        }
+      }
+
+      // ── GIF Viewer ─────────────────────────────────────────
+      function viewGif(path, name, category) {
+        document.getElementById('gifViewerImg').src = GIF_BASE + path;
+        document.getElementById('gifViewerName').textContent = name;
+        document.getElementById('gifViewerCat').textContent = category;
+        openModal('modalGifViewer');
+      }
+
+      // ── Modal helpers ──────────────────────────────────────
+      function openModal(id) {
+        document.getElementById(id).classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeModal(id) {
+        document.getElementById(id).classList.remove('open');
+        document.body.style.overflow = '';
+      }
+      // Close on overlay click
+      document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', e => {
+          if (e.target === overlay) closeModal(overlay.id);
+        });
+      });
+
+      // ── Utils ──────────────────────────────────────────────
+      function uid() {
+        return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+      }
+      function escHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      }
+      function escAttr(str) {
+        if (!str) return '';
+        return String(str).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+      }
+      function extractCategory(path) {
+        if (!path) return '';
+        // path format: "Exercicios/Category/name.gif"
+        const parts = path.split('/');
+        return parts.length >= 2 ? parts[parts.length - 2] : '';
+      }
+    </script>
+  </body>
+</html>
